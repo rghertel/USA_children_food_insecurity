@@ -1,0 +1,6 @@
+CREATE TABLE public.child_poverty_state(
+	state varchar,
+	year varchar,
+	dataform varchar,
+	amount float
+);

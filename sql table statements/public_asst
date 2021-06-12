@@ -1,0 +1,6 @@
+CREATE TABLE public.public_asst(
+	state varchar,
+	year varchar,
+	dataform varchar,
+	amount float
+);

@@ -1,0 +1,5 @@
+CREATE TABLE public.median_income(
+	state varchar,
+	year varchar,
+	income float
+);

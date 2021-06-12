@@ -1,0 +1,8 @@
+CREATE TABLE public.food_waste_18(
+	state varchar,
+	tons_surplus float,
+	dollars_surplus float,
+	tons_waste float,
+	dollars_per_ton float,
+	dollars_waste float
+);
