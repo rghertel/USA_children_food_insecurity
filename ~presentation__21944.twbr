@@ -8,6 +8,7 @@
     <IntuitiveSorting_SP2 />
     <MapboxVectorStylesAndLayers />
     <_.fcp.MarkAnimation.true...MarkAnimation />
+    <NavigationAction />
     <_.fcp.ObjectModelEncapsulateLegacy.true...ObjectModelEncapsulateLegacy />
     <_.fcp.ObjectModelTableType.true...ObjectModelTableType />
     <_.fcp.SchemaViewerObjectModel.true...SchemaViewerObjectModel />
@@ -62,6 +63,9 @@
           </named-connection>
           <named-connection caption='income_18 (2)' name='textscan.00krgsn0wuxld51cqa8f71ry5lof'>
             <connection class='textscan' directory='C:/Users/rgher/Documents/my github projects/USA_children_food_insecurity/data' filename='income_18.csv' password='' server='' />
+          </named-connection>
+          <named-connection caption='child poverty by race' name='textscan.0g5bcoy0feqird12y8to60lp2xe8'>
+            <connection class='textscan' directory='C:/Users/rgher/Documents/my github projects/USA_children_food_insecurity/data' filename='child poverty by race.csv' password='' server='' />
           </named-connection>
         </named-connections>
         <_.fcp.ObjectModelEncapsulateLegacy.false...relation connection='textscan.00u036v1pp693e13iwpg008qjvoe' name='MMG2020_2018county.csv' table='[MMG2020_2018county#csv]' type='table'>
@@ -1290,6 +1294,7 @@
       <column caption='High Threshold Type (MMG2020 2018county.csv)' datatype='string' name='[High Threshold Type (MMG2020_2018county.csv)]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
       <column caption='High Threshold in state (MMG2020 2018county.csv)' datatype='real' name='[High Threshold in state (MMG2020_2018county.csv)]' role='measure' type='quantitative' />
       <column datatype='real' name='[High Threshold in state]' role='measure' type='quantitative' />
+      <column caption='Location1' datatype='string' name='[Location]' role='dimension' type='nominal' />
       <column caption='Low Threshold Type (MMG2020 2018county.csv)' datatype='string' name='[Low Threshold Type (MMG2020_2018county.csv)]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
       <column caption='Low Threshold in state (MMG2020 2018county.csv)' datatype='real' name='[Low Threshold in state (MMG2020_2018county.csv)]' role='measure' type='quantitative' />
       <column datatype='real' name='[Low Threshold in state]' role='measure' type='quantitative' />
@@ -1322,7 +1327,20 @@
       <column caption='State (Child Poverty 18.Csv)' datatype='string' name='[state (child_poverty_18.csv)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
       <column caption='State (Financials 18.Csv)' datatype='string' name='[state (financials_18.csv)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
       <column caption='State (Food Waste 18.Csv)' datatype='string' name='[state (food_waste_18.csv)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
-      <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+      <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+        <aliases>
+          <alias key='&quot;AK&quot;' value='Alaska' />
+          <alias key='&quot;CO&quot;' value='Colorado' />
+          <alias key='&quot;DE&quot;' value='Delaware' />
+          <alias key='&quot;MS&quot;' value='Mississippi' />
+          <alias key='&quot;ND&quot;' value='North Dakota' />
+          <alias key='&quot;NE&quot;' value='Nebraska' />
+          <alias key='&quot;NV&quot;' value='Nevada' />
+          <alias key='&quot;RI&quot;' value='Rhode Island' />
+          <alias key='&quot;VT&quot;' value='Vermont' />
+          <alias key='&quot;WY&quot;' value='Wyoming' />
+        </aliases>
+      </column>
       <column caption='State Name1' datatype='string' name='[state_name]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
       <column caption='Tons Surplus' datatype='real' name='[tons_surplus]' role='measure' type='quantitative' />
       <column caption='Tons Waste' datatype='real' name='[tons_waste]' role='measure' type='quantitative' />
@@ -1395,13 +1413,18 @@
           <groupfilter function='level-members' level='[location]' />
         </groupfilter>
       </group>
+      <group caption='Action (State)' hidden='true' name='[Action (State)]' name-style='unqualified' user:auto-column='sheet_link'>
+        <groupfilter function='crossjoin'>
+          <groupfilter function='level-members' level='[state]' />
+        </groupfilter>
+      </group>
       <group caption='Action (State,Zipcode)' hidden='true' name='[Action (State,Zipcode)]' name-style='unqualified' user:auto-column='sheet_link'>
         <groupfilter function='crossjoin'>
           <groupfilter function='level-members' level='[state]' />
           <groupfilter function='level-members' level='[zipcode]' />
         </groupfilter>
       </group>
-      <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' _.fcp.SchemaViewerObjectModel.true...common-percentage='0.964912' _.fcp.SchemaViewerObjectModel.true...user-set-layout-v2='true' dim-ordering='alphabetic' measure-ordering='alphabetic' parameter-percentage='0.0350877' show-structure='true' />
+      <layout _.fcp.SchemaViewerObjectModel.false...dim-percentage='0.5' _.fcp.SchemaViewerObjectModel.false...measure-percentage='0.4' _.fcp.SchemaViewerObjectModel.true...common-percentage='0.96562' _.fcp.SchemaViewerObjectModel.true...user-set-layout-v2='true' dim-ordering='alphabetic' measure-ordering='alphabetic' parameter-percentage='0.0343797' show-structure='true' />
       <style>
         <style-rule element='mark'>
           <encoding attr='color' field='[none:state:nk]' palette='summer_10_0' type='palette'>
@@ -3954,20 +3977,26 @@
   <actions>
     <action caption='Filter 1 (generated)' name='[Action1]'>
       <activation auto-clear='true' type='on-select' />
-      <source dashboard='Dashboard 1' type='sheet' worksheet='top fi by state' />
+      <source dashboard='FI and Bank Density' type='sheet' worksheet='top fi by state' />
       <command command='tsc:tsl-filter'>
         <param name='special-fields' value='all' />
-        <param name='target' value='Dashboard 1' />
+        <param name='target' value='FI and Bank Density' />
       </command>
     </action>
     <action caption='Filter 2 (generated)' name='[Action2]'>
       <activation auto-clear='true' type='on-select' />
-      <source dashboard='Dashboard 1' type='sheet' worksheet='food banks by zipcode' />
+      <source dashboard='FI and Bank Density' type='sheet' worksheet='food banks by zipcode' />
       <command command='tsc:tsl-filter'>
         <param name='special-fields' value='all' />
-        <param name='target' value='Dashboard 1' />
+        <param name='target' value='FI and Bank Density' />
       </command>
     </action>
+    <nav-action caption='FI by State' name='[Action3]'>
+      <source dashboard='FI and Bank Density' type='sheet' worksheet='top fi by state' />
+      <params>
+        <param name='sheet' value='top fi by state' />
+      </params>
+    </nav-action>
   </actions>
   <worksheets>
     <worksheet name='Ins Rate vs FB scatter'>
@@ -3989,7 +4018,20 @@
             <column-instance column='[Organization]' derivation='Count' name='[cnt:Organization:qk]' pivot='key' type='quantitative' />
             <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
             <column-instance column='[2018 Child Food Insecurity Rate]' derivation='Sum' name='[sum:2018 Child Food Insecurity Rate:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
@@ -4235,26 +4277,6 @@
       </table>
       <simple-id uuid='{60CEDB3B-5693-438E-9948-72BA14C691BE}' />
     </worksheet>
-    <worksheet name='Sheet 14'>
-      <table>
-        <view>
-          <datasources />
-          <aggregation value='true' />
-        </view>
-        <style />
-        <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-          </pane>
-        </panes>
-        <rows />
-        <cols />
-      </table>
-      <simple-id uuid='{C960BFE0-055B-42EE-8796-8E59F029FE28}' />
-    </worksheet>
     <worksheet name='child fi by county'>
       <layout-options>
         <title>
@@ -4284,7 +4306,20 @@
             <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[County, State - Split 1]' derivation='None' name='[none:County, State - Split 1:nk]' pivot='key' type='nominal' />
             <column-instance column='[County, State - Split 2]' derivation='None' name='[none:County, State - Split 2:nk]' pivot='key' type='nominal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
             <column-instance column='[2018 Child food insecurity rate]' derivation='Sum' name='[sum:2018 Child food insecurity rate:qk]' pivot='key' type='quantitative' />
             <column aggregation='Sum' caption='Zipcode' datatype='integer' default-format='*00000' name='[zipcode]' role='dimension' semantic-role='[ZipCode].[Name]' type='ordinal' />
           </datasource-dependencies>
@@ -4382,12 +4417,25 @@
             <column datatype='string' name='[State Name]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
             <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[State Name]' derivation='None' name='[none:State Name:nk]' pivot='key' type='nominal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
             <column-instance column='[2018 Child Food Insecurity Rate]' derivation='Sum' name='[sum:2018 Child Food Insecurity Rate:qk]' pivot='key' type='quantitative' />
             <column aggregation='Sum' caption='Zipcode' datatype='integer' default-format='*00000' name='[zipcode]' role='dimension' semantic-role='[ZipCode].[Name]' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
-            <groupfilter function='level-members' level='[location]' user:ui-action-filter='[Action1]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+            <groupfilter function='member' level='[location]' member='&quot;West Virginia&quot;' user:ui-action-filter='[Action1]' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (State,Zipcode)]'>
             <groupfilter function='crossjoin' user:ui-action-filter='[Action2]' user:ui-enumeration='all' user:ui-marker='enumerate'>
@@ -4468,11 +4516,24 @@
             <column-instance column='[Address]' derivation='None' name='[none:Address:nk]' pivot='key' type='nominal' />
             <column-instance column='[Organization]' derivation='None' name='[none:Organization:nk]' pivot='key' type='nominal' />
             <column-instance column='[zipcode]' derivation='None' name='[none:zipcode:ok]' pivot='key' type='ordinal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
             <column aggregation='Sum' caption='Zipcode' datatype='integer' default-format='*00000' name='[zipcode]' role='dimension' semantic-role='[ZipCode].[Name]' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
-            <groupfilter function='level-members' level='[location]' user:ui-action-filter='[Action1]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+            <groupfilter function='member' level='[location]' member='&quot;West Virginia&quot;' user:ui-action-filter='[Action1]' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (State,Zipcode)]'>
             <groupfilter function='crossjoin' user:ui-action-filter='[Action2]' user:ui-enumeration='all' user:ui-marker='enumerate'>
@@ -4541,11 +4602,24 @@
             <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
             <column-instance column='[zipcode]' derivation='None' name='[none:zipcode:ok]' pivot='key' type='ordinal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
             <column aggregation='Sum' caption='Zipcode' datatype='integer' default-format='*00000' name='[zipcode]' role='dimension' semantic-role='[ZipCode].[Name]' type='ordinal' />
           </datasource-dependencies>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
-            <groupfilter function='level-members' level='[location]' user:ui-action-filter='[Action1]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+            <groupfilter function='member' level='[location]' member='&quot;West Virginia&quot;' user:ui-action-filter='[Action1]' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
           <slices>
             <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]</column>
@@ -4609,7 +4683,40 @@
       </table>
       <simple-id uuid='{DCF3D56C-8940-476A-9829-27C1E202AFE7}' />
     </worksheet>
+    <worksheet name='poverty by race'>
+      <table>
+        <view>
+          <datasources>
+            <datasource caption='food_banks_USA.csv+ (Multiple Connections)' name='federated.1ndagsv0qjkkwo16wn53r1iaxjyh' />
+          </datasources>
+          <datasource-dependencies datasource='federated.1ndagsv0qjkkwo16wn53r1iaxjyh'>
+            <column caption='Location1' datatype='string' name='[Location]' role='dimension' type='nominal' />
+            <column-instance column='[Location]' derivation='None' name='[none:Location:nk]' pivot='key' type='nominal' />
+          </datasource-dependencies>
+          <aggregation value='true' />
+        </view>
+        <style />
+        <panes>
+          <pane selection-relaxation-option='selection-relaxation-allow'>
+            <view>
+              <breakdown value='auto' />
+            </view>
+            <mark class='Automatic' />
+          </pane>
+        </panes>
+        <rows />
+        <cols>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:Location:nk]</cols>
+      </table>
+      <simple-id uuid='{2DCA4C09-A6CA-4D28-B44D-5EE68BAAE764}' />
+    </worksheet>
     <worksheet name='states w least fb'>
+      <layout-options>
+        <title>
+          <formatted-text>
+            <run>Lowest Food Bank Density By State</run>
+          </formatted-text>
+        </title>
+      </layout-options>
       <table>
         <view>
           <datasources>
@@ -4619,9 +4726,26 @@
             <_.fcp.ObjectModelTableType.false...column caption='food_banks_USA.csv1' datatype='integer' name='[__tableau_internal_object_id__].[food_banks_USA.csv_035C939829B942B3982DB29685463AAF]' role='measure' type='quantitative' />
             <column-instance column='[__tableau_internal_object_id__].[food_banks_USA.csv_035C939829B942B3982DB29685463AAF]' derivation='Count' name='[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]' pivot='key' type='quantitative' />
             <_.fcp.ObjectModelTableType.true...column caption='food_banks_USA.csv1' datatype='table' name='[__tableau_internal_object_id__].[food_banks_USA.csv_035C939829B942B3982DB29685463AAF]' role='measure' type='quantitative' />
+            <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[state]' derivation='None' name='[none:state:nk]' pivot='key' type='nominal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
+            <groupfilter function='member' level='[location]' member='&quot;Florida&quot;' user:ui-action-filter='[Action4]' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state:nk]'>
             <groupfilter count='10' end='bottom' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
               <groupfilter direction='DESC' expression='COUNT([__tableau_internal_object_id__].[food_banks_USA.csv_035C939829B942B3982DB29685463AAF])' function='order' user:ui-marker='order'>
@@ -4633,20 +4757,37 @@
             </groupfilter>
           </filter>
           <shelf-sorts>
-            <shelf-sort-v2 dimension-to-sort='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state:nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]' shelf='columns' />
+            <shelf-sort-v2 dimension-to-sort='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state:nk]' direction='ASC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]' shelf='columns' />
           </shelf-sorts>
           <slices>
             <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state:nk]</column>
+            <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]</column>
           </slices>
           <aggregation value='true' />
         </view>
-        <style />
+        <style>
+          <style-rule element='axis'>
+            <format attr='title' class='0' field='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]' scope='rows' value='Count of Food Banks' />
+          </style-rule>
+          <style-rule element='worksheet'>
+            <format attr='display-field-labels' scope='cols' value='false' />
+          </style-rule>
+        </style>
         <panes>
           <pane selection-relaxation-option='selection-relaxation-allow'>
             <view>
               <breakdown value='auto' />
             </view>
             <mark class='Automatic' />
+            <customized-tooltip>
+              <formatted-text>
+                <run fontcolor='#787878'>State:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state:nk]>]]></run>
+                <run>Æ&#10;</run>
+                <run fontcolor='#787878'>Count of Food Banks:&#9;</run>
+                <run bold='true'><![CDATA[<[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]>]]></run>
+              </formatted-text>
+            </customized-tooltip>
           </pane>
         </panes>
         <rows>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]</rows>
@@ -4666,10 +4807,14 @@
               <calculation class='tableau' formula='TRIM( SPLIT( [County, State], &quot;,&quot;, 2 ) )' />
             </column>
             <column datatype='string' name='[County, State]' role='dimension' semantic-role='[County].[Name]' type='nominal' />
+            <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[County, State - Split 2]' derivation='None' name='[none:County, State - Split 2:nk]' pivot='key' type='nominal' />
             <column-instance column='[County, State]' derivation='None' name='[none:County, State:nk]' pivot='key' type='nominal' />
             <column-instance column='[2018 Child food insecurity rate]' derivation='Sum' name='[sum:2018 Child food insecurity rate:qk]' pivot='key' type='quantitative' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
+            <groupfilter function='member' level='[location]' member='&quot;Mississippi&quot;' user:ui-action-filter='[Action4]' user:ui-domain='database' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:County, State - Split 2:nk]'>
             <groupfilter function='union' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate'>
               <groupfilter function='member' level='[none:County, State - Split 2:nk]' member='&quot;Alabama&quot;' />
@@ -4689,6 +4834,7 @@
           </shelf-sorts>
           <slices>
             <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:County, State - Split 2:nk]</column>
+            <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -4741,10 +4887,26 @@
             <column caption='Child Fi Rate' datatype='real' name='[child_fi_rate]' role='measure' type='quantitative' />
             <column caption='Location' datatype='string' name='[location]' role='dimension' type='nominal' />
             <column-instance column='[location]' derivation='None' name='[none:location:nk]' pivot='key' type='nominal' />
-            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
+            <column caption='State' datatype='string' name='[state]' role='dimension' semantic-role='[State].[Name]' type='nominal'>
+              <aliases>
+                <alias key='&quot;AK&quot;' value='Alaska' />
+                <alias key='&quot;CO&quot;' value='Colorado' />
+                <alias key='&quot;DE&quot;' value='Delaware' />
+                <alias key='&quot;MS&quot;' value='Mississippi' />
+                <alias key='&quot;ND&quot;' value='North Dakota' />
+                <alias key='&quot;NE&quot;' value='Nebraska' />
+                <alias key='&quot;NV&quot;' value='Nevada' />
+                <alias key='&quot;RI&quot;' value='Rhode Island' />
+                <alias key='&quot;VT&quot;' value='Vermont' />
+                <alias key='&quot;WY&quot;' value='Wyoming' />
+              </aliases>
+            </column>
             <column-instance column='[child_fi_rate]' derivation='Sum' name='[sum:child_fi_rate:qk]' pivot='key' type='quantitative' />
             <column aggregation='Sum' caption='Zipcode' datatype='integer' default-format='*00000' name='[zipcode]' role='dimension' semantic-role='[ZipCode].[Name]' type='ordinal' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (State)]'>
+            <groupfilter function='level-members' level='[state]' user:ui-action-filter='[Action3]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (State,Zipcode)]'>
             <groupfilter function='crossjoin' user:ui-action-filter='[Action2]' user:ui-enumeration='all' user:ui-marker='enumerate'>
               <groupfilter function='level-members' level='[state]' />
@@ -4768,12 +4930,14 @@
           <slices>
             <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:location:nk]</column>
             <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (State,Zipcode)]</column>
+            <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (State)]</column>
           </slices>
           <aggregation value='true' />
         </view>
         <style>
           <style-rule element='label'>
             <format attr='text-format' field='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[sum:child_fi_rate:qk]' value='p0.0%' />
+            <format attr='text-orientation' field='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:location:nk]' value='0' />
           </style-rule>
           <style-rule element='worksheet'>
             <format attr='display-field-labels' scope='cols' value='false' />
@@ -4803,60 +4967,219 @@
       </table>
       <simple-id uuid='{E8999405-2CC4-4ADB-A338-5B70E234AEF1}' />
     </worksheet>
-    <worksheet name='top waste percent'>
-      <layout-options>
-        <title>
-          <formatted-text>
-            <run>Top 10 States  % of Food Surplus Dollars that is Waste</run>
-          </formatted-text>
-        </title>
-      </layout-options>
-      <table>
-        <view>
-          <datasources>
-            <datasource caption='food_banks_USA.csv+ (Multiple Connections)' name='federated.1ndagsv0qjkkwo16wn53r1iaxjyh' />
-          </datasources>
-          <datasource-dependencies datasource='federated.1ndagsv0qjkkwo16wn53r1iaxjyh'>
-            <column-instance column='[state (financials_18.csv)]' derivation='None' name='[none:state (financials_18.csv):nk]' pivot='key' type='nominal' />
-            <column caption='Perc Waste' datatype='real' name='[perc_waste]' role='measure' type='quantitative' />
-            <column caption='State (Financials 18.Csv)' datatype='string' name='[state (financials_18.csv)]' role='dimension' semantic-role='[State].[Name]' type='nominal' />
-            <column-instance column='[perc_waste]' derivation='Sum' name='[sum:perc_waste:qk]' pivot='key' type='quantitative' />
-          </datasource-dependencies>
-          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state (financials_18.csv):nk]'>
-            <groupfilter count='10' end='top' function='end' units='records' user:ui-marker='end' user:ui-top-by-field='true'>
-              <groupfilter direction='DESC' expression='SUM([perc_waste])' function='order' user:ui-marker='order'>
-                <groupfilter function='except' user:ui-domain='relevant' user:ui-enumeration='exclusive' user:ui-manual-selection='true' user:ui-manual-selection-all-when-empty='true' user:ui-marker='enumerate'>
-                  <groupfilter function='level-members' level='[none:state (financials_18.csv):nk]' />
-                  <groupfilter function='member' level='[none:state (financials_18.csv):nk]' member='%null%' />
-                </groupfilter>
-              </groupfilter>
-            </groupfilter>
-          </filter>
-          <shelf-sorts>
-            <shelf-sort-v2 dimension-to-sort='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state (financials_18.csv):nk]' direction='DESC' is-on-innermost-dimension='true' measure-to-sort-by='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[sum:perc_waste:qk]' shelf='columns' />
-          </shelf-sorts>
-          <slices>
-            <column>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state (financials_18.csv):nk]</column>
-          </slices>
-          <aggregation value='true' />
-        </view>
-        <style />
-        <panes>
-          <pane selection-relaxation-option='selection-relaxation-allow'>
-            <view>
-              <breakdown value='auto' />
-            </view>
-            <mark class='Automatic' />
-          </pane>
-        </panes>
-        <rows>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[sum:perc_waste:qk]</rows>
-        <cols>[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[none:state (financials_18.csv):nk]</cols>
-      </table>
-      <simple-id uuid='{5DB41AFF-4B20-4B33-8181-F9F4D3DEF43B}' />
-    </worksheet>
   </worksheets>
   <dashboards>
-    <dashboard name='Dashboard 1'>
+    <dashboard name='Correlations'>
+      <style />
+      <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
+      <zones>
+        <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='17' w='100000' x='0' y='0'>
+          <zone h='50000' id='16' name='Ins Rate vs FB scatter' w='50000' x='0' y='0'>
+            <zone-style>
+              <format attr='border-color' value='#000000' />
+              <format attr='border-style' value='none' />
+              <format attr='border-width' value='0' />
+              <format attr='margin' value='4' />
+            </zone-style>
+          </zone>
+          <zone h='50000' id='18' name='Ins Rate vs Food Waste' w='50000' x='0' y='50000'>
+            <zone-style>
+              <format attr='border-color' value='#000000' />
+              <format attr='border-style' value='none' />
+              <format attr='border-width' value='0' />
+              <format attr='margin' value='4' />
+            </zone-style>
+          </zone>
+          <zone h='50000' id='19' name='Ins Rate vs Poverty scatter' w='50000' x='50000' y='50000'>
+            <zone-style>
+              <format attr='border-color' value='#000000' />
+              <format attr='border-style' value='none' />
+              <format attr='border-width' value='0' />
+              <format attr='margin' value='4' />
+            </zone-style>
+          </zone>
+          <zone h='50000' id='20' name='Ins Rate vs MI' w='50000' x='50000' y='0'>
+            <zone-style>
+              <format attr='border-color' value='#000000' />
+              <format attr='border-style' value='none' />
+              <format attr='border-width' value='0' />
+              <format attr='margin' value='4' />
+            </zone-style>
+          </zone>
+        </zone>
+        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='5250' id='12' w='10800' x='7400' y='18875'>
+          <formatted-text>
+            <run bold='true' fontsize='11'>R = .032</run>
+          </formatted-text>
+        </zone>
+        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='3750' id='13' w='10000' x='59600' y='79875'>
+          <formatted-text>
+            <run bold='true' fontcolor='#555555' fontsize='11'>R = .650</run>
+          </formatted-text>
+        </zone>
+        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='3750' id='14' w='10000' x='10300' y='76250'>
+          <formatted-text>
+            <run bold='true' fontcolor='#555555' fontsize='11'>R = .072</run>
+          </formatted-text>
+        </zone>
+        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' h='3750' id='15' w='10000' x='59600' y='15750'>
+          <formatted-text>
+            <run bold='true' fontcolor='#555555' fontsize='11'>R = .526</run>
+          </formatted-text>
+        </zone>
+      </zones>
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='1450' minheight='1450' sizing-mode='vscroll' />
+          <zones>
+            <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='24' w='100000' x='0' y='0'>
+              <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='98000' id='23' param='vert' w='98400' x='800' y='1000'>
+                <zone fixed-size='280' h='50000' id='16' is-fixed='true' name='Ins Rate vs FB scatter' w='50000' x='0' y='0'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='50000' id='20' is-fixed='true' name='Ins Rate vs MI' w='50000' x='50000' y='0'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' h='3750' id='15' w='10000' x='59600' y='15750'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#555555' fontsize='11'>R = .526</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='5250' id='12' w='10800' x='7400' y='18875'>
+                  <formatted-text>
+                    <run bold='true' fontsize='11'>R = .032</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='50000' id='18' is-fixed='true' name='Ins Rate vs Food Waste' w='50000' x='0' y='50000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='50000' id='19' is-fixed='true' name='Ins Rate vs Poverty scatter' w='50000' x='50000' y='50000'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='3750' id='14' w='10000' x='10300' y='76250'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#555555' fontsize='11'>R = .072</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='3750' id='13' w='10000' x='59600' y='79875'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#555555' fontsize='11'>R = .650</run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+              </zone>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{26421FBA-F050-4673-9D67-32F443987A8D}' />
+    </dashboard>
+    <dashboard name='Dashboard 5'>
+      <style />
+      <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
+      <zones>
+        <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='4' w='100000' x='0' y='0'>
+          <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' h='98000' id='3' w='98400' x='800' y='1000'>
+            <formatted-text>
+              <run fontcolor='#000000' fontsize='12'>•                 Food insecurity rate: 16.9% </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>•                 # food insecure doesn’t include Puerto Rico </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>•                 Poverty line (2 adults, 2 kids): $25,100 /Poverty Rate: 18% </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>•                 Surplus food isn’t consumed. It’s broken into rescue, recycling, and food waste. I looked at the $ amount in waste. </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>•                 Poverty and Median Income are </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>•                 </run>
+              <run bold='true' fontcolor='#000000' fontsize='12'>Definitions:</run>
+              <run fontcolor='#000000' fontsize='12'> Median annual income for families with own children under age 18 living in the household. </run>
+            </formatted-text>
+            <zone-style>
+              <format attr='border-color' value='#000000' />
+              <format attr='border-style' value='none' />
+              <format attr='border-width' value='0' />
+              <format attr='margin' value='4' />
+            </zone-style>
+          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
+        </zone>
+      </zones>
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='2' w='100000' x='0' y='0'>
+              <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='84000' id='1' param='vert' w='84000' x='8000' y='8000' />
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{B0795550-2FED-4A65-9005-A8AFDA879654}' />
+    </dashboard>
+    <dashboard name='FI and Bank Density'>
       <style />
       <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
       <zones>
@@ -4933,10 +5256,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='1250' minheight='1250' sizing-mode='vscroll' />
+          <size maxheight='1300' minheight='1300' sizing-mode='vscroll' />
           <zones>
-            <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='25' w='100000' x='0' y='0'>
-              <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='98000' id='24' param='vert' w='98400' x='800' y='1000'>
+            <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='42' w='100000' x='0' y='0'>
+              <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='98000' id='41' param='vert' w='98400' x='800' y='1000'>
                 <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='7375' id='18' w='98400' x='800' y='1000'>
                   <formatted-text>
                     <run bold='true' fontalignment='1' fontcolor='#1b1b1b' fontsize='18'>Child Food Insecurity &amp; Food Bank Density (zip)</run>
@@ -4949,7 +5272,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='45313' id='19' is-fixed='true' name='fb list' w='36099' x='800' y='8375'>
+                <zone fixed-size='280' h='45313' id='19' is-fixed='true' name='fb list' w='38499' x='800' y='8375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -4958,7 +5281,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='45313' id='3' is-fixed='true' name='food banks by zipcode' w='62301' x='36899' y='8375'>
+                <zone fixed-size='280' h='45313' id='3' is-fixed='true' name='food banks by zipcode' w='59901' x='39299' y='8375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -4967,7 +5290,25 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone fixed-size='280' h='45312' id='10' is-fixed='true' name='top fi by state' w='46334' x='52866' y='53688'>
+                <zone fixed-size='280' h='45312' id='29' is-fixed='true' name='child fi by state' w='53596' x='800' y='53688'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone _.fcp.SetMembershipControl.false...type='color' _.fcp.SetMembershipControl.true...type-v2='color' h='9500' id='34' name='child fi by state' pane-specification-id='0' param='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[sum:2018 Child Food Insecurity Rate:qk]' w='14000' x='2000' y='86625'>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+                <zone fixed-size='280' h='45312' id='10' is-fixed='true' name='top fi by state' w='44804' x='54396' y='53688'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -4989,12 +5330,35 @@
       </devicelayouts>
       <simple-id uuid='{8AA7B39F-67E6-4005-A656-8AD2B7AAC6B1}' />
     </dashboard>
-    <dashboard name='Dashboard 2'>
+    <dashboard name='HHS programs'>
       <style />
       <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
       <zones>
-        <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='17' w='100000' x='0' y='0'>
-          <zone h='50000' id='16' name='Ins Rate vs FB scatter' w='50000' x='0' y='0'>
+        <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='4' w='100000' x='0' y='0'>
+          <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='98000' id='3' w='98400' x='800' y='1000'>
+            <formatted-text>
+              <run bold='true' fontcolor='#000000' fontsize='14'>Since poverty and income (economic) are most correlated with child food insecurity rates, further exploration of enforcement and management of federal services would be useful, particularly related to the Dept of Agriculture: </run>
+              <run>Æ&#10;&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Supplemental Nutrition Assistance Program (SNAP) </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   National School Lunch Program </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Special Supplemental Nutrition Program for Women, Infants, and Children (WIC) </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Child and Adult Care Food Program </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   School Breakfast Program </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Summer Food Service Program </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Commodity Supplemental Food Program </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Food Distribution Program on Indian Reservations (FDPIR) </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Senior Farmers&apos; Market Nutrition Program (SFMNP) </run>
+              <run>Æ&#10;</run>
+              <run fontcolor='#000000' fontsize='12'>o   Special Milk Program for Children </run>
+            </formatted-text>
             <zone-style>
               <format attr='border-color' value='#000000' />
               <format attr='border-style' value='none' />
@@ -5002,66 +5366,166 @@
               <format attr='margin' value='4' />
             </zone-style>
           </zone>
-          <zone h='50000' id='18' name='Ins Rate vs Food Waste' w='50000' x='0' y='50000'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='50000' id='19' name='Ins Rate vs Poverty scatter' w='50000' x='50000' y='50000'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
-          <zone h='50000' id='20' name='Ins Rate vs MI' w='50000' x='50000' y='0'>
-            <zone-style>
-              <format attr='border-color' value='#000000' />
-              <format attr='border-style' value='none' />
-              <format attr='border-width' value='0' />
-              <format attr='margin' value='4' />
-            </zone-style>
-          </zone>
+          <zone-style>
+            <format attr='border-color' value='#000000' />
+            <format attr='border-style' value='none' />
+            <format attr='border-width' value='0' />
+            <format attr='margin' value='8' />
+          </zone-style>
         </zone>
-        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='5250' id='12' w='10800' x='7400' y='18875'>
+      </zones>
+      <devicelayouts>
+        <devicelayout auto-generated='true' name='Phone'>
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='8' w='100000' x='0' y='0'>
+              <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='98000' id='7' param='vert' w='98400' x='800' y='1000'>
+                <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='98000' id='3' w='98400' x='800' y='1000'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#000000' fontsize='14'>Since poverty and income (economic) are most correlated with child food insecurity rates, further exploration of enforcement and management of federal services would be useful, particularly related to the Dept of Agriculture: </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Supplemental Nutrition Assistance Program (SNAP) </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   National School Lunch Program </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Special Supplemental Nutrition Program for Women, Infants, and Children (WIC) </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Child and Adult Care Food Program </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   School Breakfast Program </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Summer Food Service Program </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Commodity Supplemental Food Program </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Food Distribution Program on Indian Reservations (FDPIR) </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Senior Farmers&apos; Market Nutrition Program (SFMNP) </run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontsize='12'>o   Special Milk Program for Children </run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+              </zone>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
+        </devicelayout>
+      </devicelayouts>
+      <simple-id uuid='{D3ADF88A-5C6B-4BA5-9F93-2AD98A2ECC81}' />
+    </dashboard>
+    <dashboard name='References'>
+      <style />
+      <size maxheight='800' maxwidth='1000' minheight='800' minwidth='1000' />
+      <zones>
+        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='51625' id='3' w='81900' x='3300' y='4125'>
           <formatted-text>
-            <run bold='true' fontsize='11'>R = .032</run>
-          </formatted-text>
-        </zone>
-        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='3750' id='13' w='10000' x='59600' y='79875'>
-          <formatted-text>
-            <run bold='true' fontcolor='#555555' fontsize='11'>R = .650</run>
-          </formatted-text>
-        </zone>
-        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='3750' id='14' w='10000' x='10300' y='76250'>
-          <formatted-text>
-            <run bold='true' fontcolor='#555555' fontsize='11'>R = .072</run>
-          </formatted-text>
-        </zone>
-        <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' h='3750' id='15' w='10000' x='59600' y='15750'>
-          <formatted-text>
-            <run bold='true' fontcolor='#555555' fontsize='11'>R = .526</run>
+            <run bold='true' fontcolor='#333333' fontname='Tableau Light' fontsize='14'>References:</run>
+            <run>Æ&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Map The Meal Gap (files received via email): </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&amp;amp;_ga=2.67349524.44214178.1620268572-880066652.1619024952&amp;quot;' underline='true'>https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&amp;_ga=2.67349524.44214178.1620268572-880066652.1619024952</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+            <run>Æ&#10;&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Food Bank Data: </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.foodbanks.net/&amp;quot;' underline='true'>https://www.foodbanks.net/</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+            <run>Æ&#10;&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Poverty, Median Income: </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://datacenter.kidscount.org/topics&amp;quot;' underline='true'>https://datacenter.kidscount.org/topics</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+            <run>Æ&#10;&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Food Surplus and Waste: </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://insights.refed.com/&amp;quot;' underline='true'>https://insights.refed.com/</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+            <run>Æ&#10;&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Poverty Guidelines: </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references&amp;quot;' underline='true'>https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+            <run>Æ&#10;&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Federal Programs: </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html&amp;quot;' underline='true'>https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+            <run>Æ&#10;&#10;</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Minimum Wage: </run>
+            <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.laborlawcenter.com/state-minimum-wage-rates/&amp;quot;' underline='true'>https://www.laborlawcenter.com/state-minimum-wage-rates/</run>
+            <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
           </formatted-text>
         </zone>
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='800' minheight='800' sizing-mode='vscroll' />
-          <zones />
+          <size maxheight='700' minheight='700' sizing-mode='vscroll' />
+          <zones>
+            <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='7' w='100000' x='0' y='0'>
+              <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='98000' id='6' param='vert' w='98400' x='800' y='1000'>
+                <zone _.fcp.SetMembershipControl.false...type='text' _.fcp.SetMembershipControl.true...type-v2='text' forceUpdate='true' h='51625' id='3' w='81900' x='3300' y='4125'>
+                  <formatted-text>
+                    <run bold='true' fontcolor='#333333' fontname='Tableau Light' fontsize='14'>References:</run>
+                    <run>Æ&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Map The Meal Gap (files received via email): </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&amp;amp;_ga=2.67349524.44214178.1620268572-880066652.1619024952&amp;quot;' underline='true'>https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&amp;_ga=2.67349524.44214178.1620268572-880066652.1619024952</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Food Bank Data: </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.foodbanks.net/&amp;quot;' underline='true'>https://www.foodbanks.net/</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Poverty, Median Income: </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://datacenter.kidscount.org/topics&amp;quot;' underline='true'>https://datacenter.kidscount.org/topics</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Food Surplus and Waste: </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://insights.refed.com/&amp;quot;' underline='true'>https://insights.refed.com/</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Poverty Guidelines: </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references&amp;quot;' underline='true'>https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Federal Programs: </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html&amp;quot;' underline='true'>https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                    <run>Æ&#10;&#10;</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>·       Minimum Wage: </run>
+                    <run auto-url='true' fontcolor='#0000ff' fontname='Tableau Light' fontsize='12' hyperlink='tabdoc:load-url url=&amp;quot;https://www.laborlawcenter.com/state-minimum-wage-rates/&amp;quot;' underline='true'>https://www.laborlawcenter.com/state-minimum-wage-rates/</run>
+                    <run fontcolor='#000000' fontname='Tableau Light' fontsize='12'>Æ </run>
+                  </formatted-text>
+                  <zone-style>
+                    <format attr='border-color' value='#000000' />
+                    <format attr='border-style' value='none' />
+                    <format attr='border-width' value='0' />
+                    <format attr='margin' value='4' />
+                    <format attr='padding' value='0' />
+                  </zone-style>
+                </zone>
+              </zone>
+              <zone-style>
+                <format attr='border-color' value='#000000' />
+                <format attr='border-style' value='none' />
+                <format attr='border-width' value='0' />
+                <format attr='margin' value='8' />
+              </zone-style>
+            </zone>
+          </zones>
         </devicelayout>
       </devicelayouts>
-      <simple-id uuid='{26421FBA-F050-4673-9D67-32F443987A8D}' />
+      <simple-id uuid='{94FE1FA9-E7C4-4B8B-B1A4-F4F3CD181143}' />
     </dashboard>
     <dashboard name='Story 1' type='storyboard'>
       <layout-options>
         <title>
-          <formatted-text>
-            <run>Start With:</run>
-          </formatted-text>
+          <formatted-text />
         </title>
       </layout-options>
       <style />
@@ -5069,7 +5533,7 @@
       <zones>
         <zone _.fcp.SetMembershipControl.false...type='layout-basic' _.fcp.SetMembershipControl.true...type-v2='layout-basic' h='100000' id='2' w='100000' x='0' y='0'>
           <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='98340' id='7' param='vert' removable='false' w='98426' x='787' y='830'>
-            <zone _.fcp.SetMembershipControl.false...type='title' _.fcp.SetMembershipControl.true...type-v2='title' h='4253' id='8' w='98426' x='787' y='830'>
+            <zone _.fcp.SetMembershipControl.false...type='title' _.fcp.SetMembershipControl.true...type-v2='title' h='1867' id='8' w='98426' x='787' y='830'>
               <zone-style>
                 <format attr='border-color' value='#000000' />
                 <format attr='border-style' value='none' />
@@ -5077,13 +5541,46 @@
                 <format attr='margin' value='4' />
               </zone-style>
             </zone>
-            <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='94087' id='1' param='vert' removable='false' w='98426' x='787' y='5083'>
-              <zone _.fcp.SetMembershipControl.false...type='flipboard-nav' _.fcp.SetMembershipControl.true...type-v2='flipboard-nav' h='10477' id='4' is-fixed='true' paired-zone-id='5' removable='false' w='98426' x='787' y='5083' />
-              <zone _.fcp.SetMembershipControl.false...type='flipboard' _.fcp.SetMembershipControl.true...type-v2='flipboard' h='83610' id='5' paired-zone-id='4' removable='false' w='98426' x='787' y='15560'>
-                <flipboard active-id='2' nav-type='caption' show-nav-arrows='true'>
+            <zone _.fcp.SetMembershipControl.false...type='layout-flow' _.fcp.SetMembershipControl.true...type-v2='layout-flow' h='96473' id='1' param='vert' removable='false' w='98426' x='787' y='2697'>
+              <zone _.fcp.SetMembershipControl.false...type='flipboard-nav' _.fcp.SetMembershipControl.true...type-v2='flipboard-nav' h='6535' id='4' paired-zone-id='5' removable='false' w='98426' x='787' y='2697' />
+              <zone _.fcp.SetMembershipControl.false...type='flipboard' _.fcp.SetMembershipControl.true...type-v2='flipboard' h='89938' id='5' paired-zone-id='4' removable='false' w='98426' x='787' y='9232'>
+                <flipboard active-id='2' nav-type='dot' show-nav-arrows='true'>
                   <story-points>
                     <story-point caption='Title' captured-sheet='' id='2' />
-                    <story-point captured-sheet='Dashboard 1' id='1' />
+                    <story-point caption='Some beginning facts and assumptions' captured-sheet='Dashboard 5' id='8' />
+                    <story-point caption='Child Food Insecurity &amp; Food Bank Density (links to top 10)' captured-sheet='FI and Bank Density' id='1'>
+                      <capturedDeltas>
+                        <worksheet name='child fi by state'>
+                          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
+                            <groupfilter function='level-members' level='[location]' user:ui-action-filter='[Action1]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+                          </filter>
+                          <style delta-type='added'>
+                            <style-rule element='axis'>
+                              <encoding attr='space' class='0' field='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Latitude (generated)]' field-type='quantitative' max='6996228.0610801922' min='3907726.4493899718' projection='EPSG:3857' range-type='fixed' scope='rows' type='space' />
+                              <encoding attr='space' class='0' field='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Longitude (generated)]' field-type='quantitative' max='33919146.498069301' min='28668693.977261879' projection='EPSG:3857' range-type='fixed' scope='cols' type='space' />
+                            </style-rule>
+                          </style>
+                        </worksheet>
+                        <worksheet name='fb list'>
+                          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
+                            <groupfilter function='level-members' level='[location]' user:ui-action-filter='[Action1]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+                          </filter>
+                        </worksheet>
+                        <worksheet name='food banks by zipcode'>
+                          <filter class='categorical' column='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[Action (Location)]'>
+                            <groupfilter function='level-members' level='[location]' user:ui-action-filter='[Action1]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+                          </filter>
+                        </worksheet>
+                        <worksheet name='top fi by state'>
+                          <selection-collection />
+                        </worksheet>
+                      </capturedDeltas>
+                    </story-point>
+                    <story-point caption='Correlations: F.I. vs Food Banks, and other Economic Indicators (is indicators the right word here?)' captured-sheet='Correlations' id='3' />
+                    <story-point caption='Economic is more related: what programs exist? do they need improvement?' captured-sheet='HHS programs' id='4' />
+                    <story-point caption='Deeper dive into top 10: what programs are they lacking?' captured-sheet='' id='6' />
+                    <story-point caption='Conclusion: didnt find relationship between food banks' captured-sheet='' id='7' />
+                    <story-point caption='References' captured-sheet='References' id='5' />
                   </story-points>
                 </flipboard>
               </zone>
@@ -5104,7 +5601,7 @@
     <window class='worksheet' name='fb list'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5117,7 +5614,7 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5127,7 +5624,7 @@
     <window class='worksheet' name='food banks by zipcode'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5140,12 +5637,12 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='27'>
+          <strip size='34'>
             <card type='title' />
           </strip>
         </edge>
         <edge name='right'>
-          <strip size='128'>
+          <strip size='160'>
             <card pane-specification-id='0' param='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[__tableau_internal_object_id__].[cnt:food_banks_USA.csv_035C939829B942B3982DB29685463AAF:qk]' type='size' />
           </strip>
         </edge>
@@ -5158,7 +5655,7 @@
     <window class='worksheet' name='child fi by county'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5171,12 +5668,12 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
         <edge name='right'>
-          <strip size='128'>
+          <strip size='160'>
             <card pane-specification-id='0' param='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[sum:2018 Child food insecurity rate:qk]' type='color' />
           </strip>
         </edge>
@@ -5189,25 +5686,25 @@
     <window class='worksheet' name='child fi by state'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
           </strip>
         </edge>
         <edge name='top'>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='columns' />
           </strip>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
         <edge name='right'>
-          <strip size='128'>
+          <strip size='160'>
             <card pane-specification-id='0' param='[federated.1ndagsv0qjkkwo16wn53r1iaxjyh].[sum:2018 Child Food Insecurity Rate:qk]' type='color' />
           </strip>
         </edge>
@@ -5220,20 +5717,20 @@
     <window class='worksheet' name='Ins Rate vs FB scatter'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
           </strip>
         </edge>
         <edge name='top'>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='columns' />
           </strip>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5243,20 +5740,20 @@
     <window class='worksheet' name='Ins Rate vs Poverty scatter'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
           </strip>
         </edge>
         <edge name='top'>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='columns' />
           </strip>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5266,7 +5763,7 @@
     <window class='worksheet' name='Ins Rate vs Food Waste'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5279,7 +5776,7 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5289,20 +5786,20 @@
     <window class='worksheet' name='Ins Rate vs MI'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
           </strip>
         </edge>
         <edge name='top'>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='columns' />
           </strip>
-          <strip size='2147483647'>
+          <strip size='38'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5312,7 +5809,7 @@
     <window class='worksheet' name='states w least fb'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5325,7 +5822,7 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5335,20 +5832,20 @@
     <window class='worksheet' name='top fi by state'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
           </strip>
         </edge>
         <edge name='top'>
-          <strip size='30'>
+          <strip size='38'>
             <card type='columns' />
           </strip>
-          <strip size='30'>
+          <strip size='38'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
@@ -5358,7 +5855,7 @@
     <window class='worksheet' name='top fi by county'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5371,17 +5868,17 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
       </cards>
       <simple-id uuid='{7CDC8D1E-1B47-4814-9BBB-7A5F7234F356}' />
     </window>
-    <window class='worksheet' name='top waste percent'>
+    <window class='worksheet' name='poverty by race'>
       <cards>
         <edge name='left'>
-          <strip size='128'>
+          <strip size='160'>
             <card type='pages' />
             <card type='filters' />
             <card type='marks' />
@@ -5394,37 +5891,14 @@
           <strip size='2147483647'>
             <card type='rows' />
           </strip>
-          <strip size='24'>
+          <strip size='31'>
             <card type='title' />
           </strip>
         </edge>
       </cards>
-      <simple-id uuid='{690B760B-8E2F-4EA4-81EC-F91680A0BE29}' />
+      <simple-id uuid='{69C6967C-CD9B-4156-87E3-BFA6DB46B517}' />
     </window>
-    <window class='worksheet' maximized='true' name='Sheet 14'>
-      <cards>
-        <edge name='left'>
-          <strip size='128'>
-            <card type='pages' />
-            <card type='filters' />
-            <card type='marks' />
-          </strip>
-        </edge>
-        <edge name='top'>
-          <strip size='2147483647'>
-            <card type='columns' />
-          </strip>
-          <strip size='2147483647'>
-            <card type='rows' />
-          </strip>
-          <strip size='24'>
-            <card type='title' />
-          </strip>
-        </edge>
-      </cards>
-      <simple-id uuid='{899D8206-A64D-42E2-8DD2-20F856241D42}' />
-    </window>
-    <window class='dashboard' name='Dashboard 1'>
+    <window class='dashboard' name='FI and Bank Density'>
       <viewpoints>
         <viewpoint name='child fi by state'>
           <zoom type='entire-view' />
@@ -5438,10 +5912,10 @@
           <zoom type='entire-view' />
         </viewpoint>
       </viewpoints>
-      <active id='-1' />
+      <active id='10' />
       <simple-id uuid='{3F5CD9C3-A6CA-4B9D-91D7-5E9271DCE6D1}' />
     </window>
-    <window class='dashboard' name='Dashboard 2'>
+    <window class='dashboard' name='Correlations'>
       <viewpoints>
         <viewpoint name='Ins Rate vs FB scatter'>
           <zoom type='entire-view' />
@@ -5459,10 +5933,25 @@
       <active id='-1' />
       <simple-id uuid='{ECBE5BEF-4AB0-4A0B-956B-9E342A997FE7}' />
     </window>
-    <window class='dashboard' name='Story 1'>
+    <window class='dashboard' maximized='true' name='References'>
       <viewpoints />
       <active id='-1' />
+      <simple-id uuid='{39605FF5-8DB5-40E8-9BD9-666329E48751}' />
+    </window>
+    <window class='dashboard' name='HHS programs'>
+      <viewpoints />
+      <active id='3' />
+      <simple-id uuid='{BE03DDEA-FD6C-4465-9A6B-AEFFA0E8A20D}' />
+    </window>
+    <window class='dashboard' name='Story 1'>
+      <viewpoints />
+      <active id='4' />
       <simple-id uuid='{210C49CC-6562-408A-B09E-3E3F5B951D5A}' />
+    </window>
+    <window class='dashboard' name='Dashboard 5'>
+      <viewpoints />
+      <active id='3' />
+      <simple-id uuid='{C4AFDAE1-2912-44D5-AFB4-4CAA80DF957B}' />
     </window>
   </windows>
 </workbook>

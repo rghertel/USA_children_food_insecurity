@@ -1,5 +1,27 @@
-# USA_children_food_insecurity
+# Child Food Insecurity in the US (2018)
 
-My idea is to explore data that shows food insecurity among children in the US, by state, (maybe over a time period.) I will also look at concentration of food banks as well, and see if there is any correlation between lack of pantries and higher numbers of insecurity in order to pinpoint regions (or cities, or counties) that need more resources to help hungry children.
-If I have time, I also want to study other possible insecurities that relate to children’s well-being, and see if there is a correlation between these different types of insecurities. If so, I will again pinpoint these areas where children are lacking security, see if there are sufficient social welfare services in those area, and if not, make suggestions of where and which ones could be added to improve upon care and well-being of children. (More realistically, I think I should pick a few insecurities that I hypothesize are related to child hunger, and once I find one with the strongest correlation, I take a closer look at that one)
-For instance, if through exploring, I find that the Southeast seems to have generally more food insecurity among children, and I also see that there is a higher divorce rate, and/or 1-income households, and/or (another factor), then I can conclude there are multiple basics that children may be lacking. I can then look at density of help in those areas. Are there enough food banks, WIC locations, etc. there?
+## Introduction
+My project explores food insecurity rates among children and food bank density in the US. It also explores how other factors are correlated to food insecurity rates, including food bank density, as well as economic indicators such as food waste, poverty, and income.
+
+Based on these relationships, I also look deeper into some of the social welfare programs in the states with the highest child food insecurity rates in order to find any areas for improvement.
+
+## Technologies
+- SQL
+- Python
+- Excel
+- Tableau
+
+## Sources
+·       Map The Meal Gap (files received via email): https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&_ga=2.67349524.44214178.1620268572-880066652.1619024952 
+
+·       Food Bank Data: https://www.foodbanks.net/ 
+
+·       Poverty, Median Income: https://datacenter.kidscount.org/topics 
+
+·       Food Surplus and Waste: https://insights.refed.com/ 
+
+·       Poverty Guidelines: https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references 
+
+·       Federal Programs: https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html 
+
+·       Minimum Wage: https://www.laborlawcenter.com/state-minimum-wage-rates/ 
