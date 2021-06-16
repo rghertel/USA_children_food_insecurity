@@ -110,6 +110,16 @@ percent of waste to surplus*/
 
 /*National poverty rate for kids*/
 
-SELECT *
-FROM child_poverty_state
-WHERE state = 'United States' AND year = '2018'
+-- SELECT *
+-- FROM child_poverty_state
+-- WHERE state = 'United States' AND year = '2018'
+
+
+/*Public assistance by state in 2018*/
+
+SELECT state, amount --amount*100 AS pa_rate
+FROM public_asst
+WHERE year = '2018' AND dataform = 'Percent' AND state != 'Puerto Rico';
+
+
+/*physical health 2018/2019
