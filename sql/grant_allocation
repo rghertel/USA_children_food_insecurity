@@ -1,0 +1,8 @@
+CREATE TABLE public.grant_allocation(
+	state varchar,
+	all_grants_dollar float,
+	all_grants_per_capita float,
+	all_grants_pc_percent_US float,
+	non_medicaid_dollar float,
+	non_medicaid_per_capita float,
+	non_medicaid_pc_percent_US float)

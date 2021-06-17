@@ -10,7 +10,7 @@
 /*Child population filtered by year(focus on 2018) joined with state info */
 
 -- SELECT c.location, c.year, c.count, si.num_food_ins_children, si.child_fi_rate
--- FROM child_pop_state AS c
+-- FROM child_pop AS c
 -- LEFT JOIN stateinfo2018 AS si
 -- ON si.state_name = c.location
 -- WHERE year = '2018' AND gender = 'Total less than 18' AND CAST(count AS int) > 1;
@@ -43,10 +43,10 @@
 
 -- with child_pop18 as (
 -- SELECT c.location, c.year, c.count, si.num_food_ins_children, si.child_fi_rate
--- FROM child_pop_state AS c
+-- FROM child_pop AS c
 -- LEFT JOIN stateinfo2018 AS si
 -- ON si.state_name = c.location
--- WHERE year = '2018' AND gender = 'Total less than 18' AND CAST(count AS int) > 1
+-- WHERE year = '2018' AND gender = 'Total less than 18' AND CAST(count AS int) > 1)
 
 -- SELECT SUM(REPLACE(num_food_ins_children,',','')::float)/73319145*100.0
 -- FROM child_pop18
@@ -79,10 +79,8 @@
 
 /*food waste as a percentage of surplus*/
 
-SELECT *,
-	ROUND((dollars_waste/dollars_surplus*100.0)::numeric,2) AS waste_to_surplus_percent,
-	ROUND((dollars_donated/dollars_surplus*100.0)::numeric,2) AS donation_to_surplus_percent
-FROM food_waste_18;
+-- SELECT *, ROUND((dollars_waste/dollars_surplus*100.0)::numeric,2) AS waste_to_surplus_percent
+-- FROM food_waste_18;
 
 
 /*Financial comparisons. Need median income from income, budget shortfall from stateinfo, dollar food waste from food waste
@@ -119,26 +117,9 @@ percent of waste to surplus*/
 
 /*Public assistance by state in 2018*/
 
--- SELECT state, amount --amount*100 AS pa_rate
--- FROM public_asst
--- WHERE year = '2018' AND dataform = 'Percent' AND state != 'Puerto Rico';
+SELECT state, amount --amount*100 AS pa_rate
+FROM public_asst
+WHERE year = '2018' AND dataform = 'Percent' AND state != 'Puerto Rico';
 
 
-/*find food banks per 100,000 people*/
-
--- SELECT state_ab, pop, COUNT(organization) AS num_foodbanks, (COUNT(organization)/pop)*100000 AS food_banks_per_100000
--- FROM child_pop_18 AS c
--- LEFT JOIN food_bank_data AS f
--- ON c.state_ab = f.state
--- GROUP BY state_ab, pop
-
-
-/* non-medicaid grants */
-
--- SELECT state, non_medicaid_dollar, non_medicaid_per_capita, non_medicaid_pc_percent_us
--- FROM grant_allocation
--- WHERE state NOT IN ('Total', 'Total, Allocated', 'Puerto Rico', 'Guam', 'Virgin Islands', 'American Samoa', 'Northern Mariana Islands');
-
-
--- SELECT *
--- FROM food_waste_18
+/*physical health 2018/2019

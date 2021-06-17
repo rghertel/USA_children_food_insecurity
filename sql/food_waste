@@ -3,6 +3,8 @@ CREATE TABLE public.food_waste_18(
 	tons_surplus float,
 	dollars_surplus float,
 	tons_waste float,
+	tons_donated float,
 	dollars_per_ton float,
+	dollars_donated float,
 	dollars_waste float
 );

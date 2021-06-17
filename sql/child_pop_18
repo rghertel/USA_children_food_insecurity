@@ -1,0 +1,8 @@
+CREATE TABLE public.child_pop_18(
+	state_name varchar,
+	state_ab varchar,
+	year varchar,
+	pop float,
+	num_fi float,
+	fi_rate float
+);
