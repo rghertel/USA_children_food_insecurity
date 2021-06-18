@@ -1,0 +1,5 @@
+CREATE TABLE public.incarceration(
+	state varchar,
+	year varchar,
+	num_or_percent varchar,
+	value float)
