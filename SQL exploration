@@ -79,10 +79,10 @@
 
 /*food waste as a percentage of surplus*/
 
-SELECT *,
-	ROUND((dollars_waste/dollars_surplus*100.0)::numeric,2) AS waste_to_surplus_percent,
-	ROUND((dollars_donated/dollars_surplus*100.0)::numeric,2) AS donation_to_surplus_percent
-FROM food_waste_18;
+-- SELECT *,
+-- 	ROUND((dollars_waste/dollars_surplus*100.0)::numeric,2) AS waste_to_surplus_percent,
+-- 	ROUND((dollars_donated/dollars_surplus*100.0)::numeric,2) AS donation_to_surplus_percent
+-- FROM food_waste_18;
 
 
 /*Financial comparisons. Need median income from income, budget shortfall from stateinfo, dollar food waste from food waste
@@ -140,5 +140,3 @@ percent of waste to surplus*/
 -- WHERE state NOT IN ('Total', 'Total, Allocated', 'Puerto Rico', 'Guam', 'Virgin Islands', 'American Samoa', 'Northern Mariana Islands');
 
 
--- SELECT *
--- FROM food_waste_18
