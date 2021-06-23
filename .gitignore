@@ -141,3 +141,5 @@ cython_debug/
 capstone_journal.*
 data/
 script.*
+Assumptions.*
+proposak_modified_real_time.*
