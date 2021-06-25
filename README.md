@@ -12,18 +12,18 @@ Based on these relationships, I also look deeper into some of the social welfare
 - Tableau
 
 ## Sources
-·       [Map The Meal Gap (files received via email)]https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&_ga=2.67349524.44214178.1620268572-880066652.1619024952 
+·       [Map The Meal Gap (files received via email)](https://www.feedingamerica.org/research/map-the-meal-gap/how-we-got-the-map-data?s_src=WXXX1MTMG&_ga=2.67349524.44214178.1620268572-880066652.1619024952 )
 
-·       [Food Bank Data] https://www.foodbanks.net/ 
+·       [Food Bank Data]( https://www.foodbanks.net/ )
 
-·       [Poverty, Median Income] https://datacenter.kidscount.org/topics 
+·       [Poverty, Median Income] (https://datacenter.kidscount.org/topics 
+)
+·       [Food Surplus and Waste] (https://insights.refed.com/ )
 
-·       [Food Surplus and Waste] https://insights.refed.com/ 
-
-·       [Poverty Guidelines] https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references 
-
-·       [Federal Programs] https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html 
-
-·       [Minimum Wage] https://www.laborlawcenter.com/state-minimum-wage-rates/
- 
-·		[Federal Funds (files received via email)] https://ffis.org/
+·       [Poverty Guidelines]( https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references 
+)
+·       [Federal Programs] (https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html 
+)
+·       [Minimum Wage]( https://www.laborlawcenter.com/state-minimum-wage-rates/
+)
+·		[Federal Funds (files received via email)] (https://ffis.org/)
