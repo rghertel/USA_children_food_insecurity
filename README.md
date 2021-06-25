@@ -1,4 +1,4 @@
-# Child Food Insecurity in the US (2018)
+# [Child Food Insecurity in the US (2018)](https://public.tableau.com/app/profile/rachel.h7945/viz/ChildFoodInsecurityintheUSA/Presentation)
 
 ## Overview
 My capstone explores food insecurity among children across the US. I attempt to answer three main questions:
