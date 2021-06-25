@@ -1,14 +1,23 @@
 # Child Food Insecurity in the US (2018)
 
-## Introduction
-My project explores food insecurity rates among children and food bank density in the US. It also explores how other factors are correlated to food insecurity rates, including food bank density, as well as economic indicators such as food waste, poverty, and income.
+## Overview
+My capstone explores food insecurity among children across the US. I attempt to answer three main questions:
 
-Based on these relationships, I also look deeper into some of the social welfare programs in the states with the highest child food insecurity rates in order to find any areas for improvement.
+ - What do food insecurity rates among children look like across the US?
+
+ - Is there a correlation between food insecure children and lack of food banks?
+
+ - Are there other well-being factors that relate to childhood food insecurity, either as a result of it or as the cause of it?
+
+Based on these three questions, I provide insight into child food insecurity rates by state and county, food bank density, supermarket access, economic conditions and their relationship to food insecurity and public assistance, and food waste and donation compared to overall surplus.
+
+## Motivation
+I was inspired to explore data related to food because of my degree in hospitality management and extensive background in that industry. However, I felt myself more drawn to study areas of opportunity to improve social well-being rather than finances.
 
 ## Technologies
-- SQL
-- Python
-- Excel
+- PgAdmin/PostgreSQL
+- Python/Jupyter Notebook
+- Microsoft Excel
 - Tableau
 
 ## Sources
@@ -16,14 +25,13 @@ Based on these relationships, I also look deeper into some of the social welfare
 
 ·       [Food Bank Data]( https://www.foodbanks.net/ )
 
-·       [Poverty, Median Income] (https://datacenter.kidscount.org/topics 
-)
+·       [Poverty, Median Income] (https://datacenter.kidscount.org/topics)
+
 ·       [Food Surplus and Waste] (https://insights.refed.com/ )
 
-·       [Poverty Guidelines]( https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references 
-)
-·       [Federal Programs] (https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html 
-)
-·       [Minimum Wage]( https://www.laborlawcenter.com/state-minimum-wage-rates/
-)
+·       [Poverty Guidelines]( https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references)
+
+·       [Federal Programs] (https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html )
+
+·       [Minimum Wage]( https://www.laborlawcenter.com/state-minimum-wage-rates)
 ·		[Federal Funds (files received via email)] (https://ffis.org/)
