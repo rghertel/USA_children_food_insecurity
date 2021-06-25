@@ -25,13 +25,13 @@ I was inspired to explore data related to food because of my degree in hospitali
 
 ·       [Food Bank Data]( https://www.foodbanks.net/ )
 
-·       [Poverty, Median Income] (https://datacenter.kidscount.org/topics)
+·       [Poverty, Median Income](https://datacenter.kidscount.org/topics)
 
-·       [Food Surplus and Waste] (https://insights.refed.com/ )
+·       [Food Surplus and Waste](https://insights.refed.com/ )
 
 ·       [Poverty Guidelines]( https://aspe.hhs.gov/prior-hhs-poverty-guidelines-and-federal-register-references)
 
-·       [Federal Programs] (https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html )
+·       [Federal Programs](https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html )
 
 ·       [Minimum Wage]( https://www.laborlawcenter.com/state-minimum-wage-rates)
 ·		[Federal Funds (files received via email)] (https://ffis.org/)
