@@ -34,4 +34,4 @@ I was inspired to explore data related to food because of my degree in hospitali
 ·       [Federal Programs](https://www.hhs.gov/answers/hhs-administrative/what-programs-use-the-poverty-guidelines/index.html )
 
 ·       [Minimum Wage]( https://www.laborlawcenter.com/state-minimum-wage-rates)
-·		[Federal Funds (files received via email)] (https://ffis.org/)
+·		[Federal Funds (files received via email)](https://ffis.org/)
